@@ -1,0 +1,1 @@
+- Link mysql to backend : https://spring.io/guides/gs/accessing-data-mysql
