@@ -1,4 +1,4 @@
-package com.campusmarket;
+package com.aziz;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
