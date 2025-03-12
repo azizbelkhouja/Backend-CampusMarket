@@ -14,6 +14,7 @@ public class SellerReport {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    // A report corresponds to one seller
     @OneToOne
     private Seller seller;
 
