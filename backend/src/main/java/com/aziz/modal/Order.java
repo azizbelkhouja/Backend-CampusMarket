@@ -24,14 +24,17 @@ public class Order {
 
     private String orderId;
 
+    // An order belongs to one user
     @ManyToOne
     private User user;
 
     private Long sellerId;
 
+    // An order can have multiple order items
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    // An order has one shipping address
     @ManyToOne
     private Address shippingAddress;
 
