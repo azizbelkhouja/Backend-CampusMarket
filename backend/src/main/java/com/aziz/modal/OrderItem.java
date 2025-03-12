@@ -17,6 +17,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    // Prevents exposure in the frontend
     @JsonIgnore
     // An order item belongs to one order
     @ManyToOne
