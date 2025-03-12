@@ -29,6 +29,6 @@ public class Transaction {
     @ManyToOne
     private Seller seller;
 
-    //when transaction is created
+    //time when transaction is created
     private LocalDateTime date = LocalDateTime.now();
 }
