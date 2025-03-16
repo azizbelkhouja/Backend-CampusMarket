@@ -23,6 +23,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final SellerRepository sellerRepository;
+    // check in seller table if seller_ prefix is in the name
     private static final String SELLER_PREFIX = "Seller_";
 
     @Override
@@ -43,7 +44,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
             }
         }
 
-        throw new UsernameNotFoundException(username+"email not found");
+        throw new UsernameNotFoundException(username+" email not found");
     }
 
     private UserDetails buildUserDetails(String email, String password, USER_ROLE role) {
