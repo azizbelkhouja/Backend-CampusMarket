@@ -9,7 +9,6 @@ public interface AuthService {
 
     void sendOtp(String email, USER_ROLE role) throws Exception;
 
-
     String createUser(SignupRequest req) throws Exception;
 
     AuthResponse signin(LoginRequest req) throws Exception;
