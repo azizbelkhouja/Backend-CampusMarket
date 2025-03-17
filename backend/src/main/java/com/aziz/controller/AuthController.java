@@ -1,8 +1,6 @@
 package com.aziz.controller;
 
 import com.aziz.domain.USER_ROLE;
-import com.aziz.modal.User;
-import com.aziz.modal.VerificationCode;
 import com.aziz.repository.UserRepository;
 import com.aziz.request.LoginOtpRequest;
 import com.aziz.request.LoginRequest;

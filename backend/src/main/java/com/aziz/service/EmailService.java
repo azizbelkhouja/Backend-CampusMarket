@@ -15,7 +15,7 @@ public class EmailService {
 
     private final JavaMailSender javamailSender;
 
-    public void sendVerificationOtpEmail(String userEmail, String otp, String subject, String text) throws MessagingException {
+    public void sendVerificationOtpEmail(String userEmail, String otp, String subject, String text) throws MessagingException, MailSendException {
 
         try {
             MimeMessage mimeMessage = javamailSender.createMimeMessage();
