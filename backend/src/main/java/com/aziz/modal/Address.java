@@ -15,7 +15,7 @@ import lombok.*;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // generate Id automatically ( no id from frontend when new user created )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -26,9 +26,9 @@ public class Address {
 
     private String city;
 
-    private String province;
+    private String state;
 
-    private String postalCode;
+    private String pinCode;
 
     private String mobile;
 }
