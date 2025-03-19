@@ -3,7 +3,6 @@ package com.aziz.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.List;
 
-//  enhances security by ensuring only valid JWT tokens authenticate users.
 public class JwtTokenValidator extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -42,10 +40,9 @@ public class JwtTokenValidator extends OncePerRequestFilter {
             catch (Exception e) {
                 throw new BadCredentialsException("Invalid JWT token");
             }
-            filterChain.doFilter(request, response);
-        } else {
-            filterChain.doFilter(request, response);
         }
+
+        filterChain.doFilter(request, response);
 
     }
 }
