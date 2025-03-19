@@ -1,2 +1,2 @@
-- https://youtu.be/oGhc5Z-WJSw?si=KklZNgOPMpWZd6uL
-- 
+- Shopping Cart Backend : https://youtu.be/oGhc5Z-WJSw?si=KklZNgOPMpWZd6uL
+- Stripe payment integration : https://www.youtube.com/watch?v=BczS-wbxgp4
