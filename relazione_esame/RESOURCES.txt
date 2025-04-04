@@ -1,2 +1,3 @@
 - Shopping Cart Backend : https://youtu.be/oGhc5Z-WJSw?si=KklZNgOPMpWZd6uL
 - Stripe payment integration : https://www.youtube.com/watch?v=BczS-wbxgp4
+- redux : https://redux-toolkit.js.org/
