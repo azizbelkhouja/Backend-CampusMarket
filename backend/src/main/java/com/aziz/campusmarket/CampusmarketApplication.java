@@ -16,6 +16,7 @@ public class CampusmarketApplication {
 		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 
 		SpringApplication.run(CampusmarketApplication.class, args);
+
 	}
 
 }
