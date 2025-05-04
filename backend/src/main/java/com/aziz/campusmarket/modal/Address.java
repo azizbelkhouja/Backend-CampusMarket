@@ -13,19 +13,20 @@ import lombok.*;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // PostgreSQL-friendly
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
-    private String locality;
-    private String address;
-    private String city;
-    private String state;
-    private String pinCode;
-    private String mobile;
 
-    // Many addresses can belong to one user
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // foreign key in Address table
-    private User user;
+    private String locality;
+
+    private String address;
+
+    private String city;
+
+    private String state;
+
+    private String pinCode;
+
+    private String mobile;
 }

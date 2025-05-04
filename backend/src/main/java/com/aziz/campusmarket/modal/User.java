@@ -1,5 +1,7 @@
 package com.aziz.campusmarket.modal;
 
+import com.aziz.campusmarket.modal.Address;
+import com.aziz.campusmarket.modal.Coupon;
 import com.aziz.campusmarket.domain.USER_ROLE;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +20,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // generate Id automatically ( no id from frontend when new user created )
+    @GeneratedValue(strategy = GenerationType.AUTO) // generate Id automatically ( no id from frontend when new user created )
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // password will not come when we fetch, pw must be secret
@@ -33,7 +35,7 @@ public class User {
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
     // One-to-Many with Address: A user can have multiple addresses
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     // address will be saved in db
     private Set<Address> addresses = new HashSet<>();
 
@@ -41,11 +43,7 @@ public class User {
     @ManyToMany
     // we don't need coupons in frontend, data needed only backend to check if coupon is valid or not
     @JsonIgnore
-    @JoinTable(
-            name = "user_coupon",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "coupon_id")
-    )
+    // each user can use a coupon only one time
     private Set<Coupon> usedCoupons = new HashSet<>();
 
 }

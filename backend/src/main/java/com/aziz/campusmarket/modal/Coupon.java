@@ -17,14 +17,19 @@ import java.util.Set;
 public class Coupon {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO) // generate Id automatically ( no id from frontend when new user created )
     private Long id;
 
     private String code;
+
     private double discountPercentage;
+
     private LocalDate validityStartDate;
+
     private LocalDate validityEndDate;
+
     private double minimumOrderValue;
+
     private boolean isActive = true;
 
     @ManyToMany(mappedBy = "usedCoupons")
