@@ -32,6 +32,7 @@ public class User {
 
     private String mobile;
 
+    @Enumerated(EnumType.STRING)
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
     // One-to-Many with Address: A user can have multiple addresses
