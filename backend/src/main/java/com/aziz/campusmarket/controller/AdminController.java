@@ -32,7 +32,7 @@ public class AdminController {
     public ResponseEntity<List<HomeCategory>> getHomeCategory(
     ) throws Exception {
 
-        List<HomeCategory> categories=homeCategoryService.getAllCategories();
+        List<HomeCategory> categories=homeCategoryService.getAllHomeCategories();
         return ResponseEntity.ok(categories);
 
     }
@@ -42,7 +42,7 @@ public class AdminController {
             @PathVariable Long id,
             @RequestBody HomeCategory homeCategory) throws Exception {
 
-        HomeCategory updatedCategory=homeCategoryService.updateCategory(homeCategory,id);
+        HomeCategory updatedCategory=homeCategoryService.updateHomeCategory(homeCategory,id);
         return ResponseEntity.ok(updatedCategory);
 
     }

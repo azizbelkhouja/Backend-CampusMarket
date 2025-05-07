@@ -30,7 +30,7 @@ public class HomeCategoryServiceImpl implements HomeCategoryService {
     }
 
     @Override
-    public HomeCategory updateCategory(HomeCategory category, Long id) throws Exception {
+    public HomeCategory updateHomeCategory(HomeCategory category, Long id) throws Exception {
 
         HomeCategory existingCategory = homeCategoryRepository.findById(id)
                 .orElseThrow(() -> new Exception("Category not found"));
@@ -47,7 +47,7 @@ public class HomeCategoryServiceImpl implements HomeCategoryService {
     }
 
     @Override
-    public List<HomeCategory> getAllCategories() {
+    public List<HomeCategory> getAllHomeCategories() {
         return homeCategoryRepository.findAll();
     }
 }
