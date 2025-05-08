@@ -137,15 +137,18 @@ CREATE TABLE orders (
     discount INT,
     order_status VARCHAR(50),
     total_item INT,
+    
+    -- paymentDetails
     payment_status VARCHAR(50),
-    order_date DATETIME,
-    deliver_date DATETIME,
-    payment_id VARCHAR(255),
     stripe_payment_link_id VARCHAR(255),
     stripe_payment_link_reference_id VARCHAR(255),
     stripe_payment_link_status VARCHAR(255),
     stripe_payment_id_zwsp VARCHAR(255),
     payment_details_status VARCHAR(50),
+	payment_id VARCHAR(255),
+    
+    order_date DATETIME,
+    deliver_date DATETIME,
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (shipping_address_id) REFERENCES address(id)
 );
