@@ -18,16 +18,6 @@ public class HomeCategoryController {
     private final HomeCategoryService homeCategoryService;
     private final HomeService homeService;
 
-
-    @PostMapping("/home/categories")
-    public ResponseEntity<Home> createHomeCategories(
-            @RequestBody List<HomeCategory> homeCategories
-    ) {
-        List<HomeCategory> categories = homeCategoryService.createCategories(homeCategories);
-        Home home = homeService.createHomePageData(categories);
-        return new ResponseEntity<>(home, HttpStatus.ACCEPTED);
-    }
-
     @GetMapping("/admin/home-category")
     public ResponseEntity<List<HomeCategory>> getHomeCategory() throws Exception {
         List<HomeCategory> categories = homeCategoryService.getAllHomeCategories();
