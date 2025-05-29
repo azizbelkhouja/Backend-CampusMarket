@@ -42,18 +42,18 @@ public class SellerController {
     private final VerificationCodeRepository verificationCodeRepository;
     private final VerificationService verificationService;
     private final JwtProvider jwtProvider;
-    private final CustomUserServiceImpl customeUserServiceImplementation;
+    private final CustomUserServiceImpl customUserServiceImplementation;
 
 
-    @PostMapping("/sent/login-top")
+    @PostMapping("/sent/login-otp")
     public ResponseEntity<ApiResponse> sentLoginOtp(@RequestBody VerificationCode req) throws Exception {
         Seller seller = sellerService.getSellerByEmail(req.getEmail());
 
         String otp = OtpUtil.generateOtp();
         VerificationCode verificationCode = verificationService.createVerificationCode(otp, req.getEmail());
 
-        String subject = "Zosh Bazaar Login Otp";
-        String text = "your login otp is - ";
+        String subject = "CampusMarket Login Otp";
+        String text = "your code is - ";
         emailService.sendVerificationOtpEmail(req.getEmail(), verificationCode.getOtp(), subject, text);
 
         ApiResponse res = new ApiResponse();
@@ -61,10 +61,8 @@ public class SellerController {
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
-    @PostMapping("/verify/login-top")
+    @PostMapping("/verify/login-otp")
     public ResponseEntity<AuthResponse> verifyLoginOtp(@RequestBody VerificationCode req) throws MessagingException, SellerException {
-//        Seller savedSeller = sellerService.createSeller(seller);
-
 
         String otp = req.getOtp();
         String email = req.getEmail();
@@ -93,7 +91,7 @@ public class SellerController {
     }
 
     private Authentication authenticate(String username) {
-        UserDetails userDetails = customeUserServiceImplementation.loadUserByUsername("seller_" + username);
+        UserDetails userDetails = customUserServiceImplementation.loadUserByUsername("seller_" + username);
 
         System.out.println("sign in userDetails - " + userDetails);
 
@@ -130,7 +128,7 @@ public class SellerController {
 
         String subject = "CampusMarket Email Verification Link";
         String text = "Welcome to CampusMarket, verify your account using this link ";
-        String frontend_url = "http://localhost:3000/verify-seller/";
+        String frontend_url = "http://localhost:5137/verify-seller/";
         emailService.sendVerificationOtpEmail(seller.getEmail(), verificationCode.getOtp(), subject, text + frontend_url);
         return new ResponseEntity<>(savedSeller, HttpStatus.CREATED);
     }
