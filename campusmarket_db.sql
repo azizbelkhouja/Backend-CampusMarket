@@ -1,6 +1,6 @@
 USE campusmarket_db;
 
-CREATE TABLE user (
+CREATE TABLE `user` (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE address (
     pin_code VARCHAR(20),
     mobile VARCHAR(20),
     user_id BIGINT NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES `user`(id) ON DELETE CASCADE
 );
 
 CREATE TABLE coupon (
@@ -43,28 +43,19 @@ CREATE TABLE user_used_coupon (
 CREATE TABLE seller (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     seller_name VARCHAR(255),
+    displayed_name VARCHAR(255) UNIQUE,
     mobile VARCHAR(20),
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255),
-
-    -- BusinessDetails fields
-    business_name VARCHAR(255),
-    business_address TEXT,
-    business_mobile VARCHAR(20),
-    business_email VARCHAR(255),
-    logo TEXT,
-    banner TEXT,
-
+    
     -- BankDetails fields
     account_number VARCHAR(50),
     account_holder_name VARCHAR(255),
     iban VARCHAR(50),
+	
+    pickupaddress VARCHAR(255) NOT NULL,
 
-    -- Pickup Address (foreign key to address)
-    pickupaddress_id BIGINT,
-    CONSTRAINT fk_pickup_address FOREIGN KEY (pickupaddress_id) REFERENCES address(id) ON DELETE SET NULL,
-
-    fiscal_code VARCHAR(100),
+    fiscal_code VARCHAR(100) UNIQUE,
 
     -- Enums
     role ENUM('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_SELLER') DEFAULT 'ROLE_SELLER',
@@ -324,15 +315,13 @@ INSERT INTO user_used_coupon (user_id, coupon_id) VALUES
 (4, 4);  -- Seller used BLACKFRIDAY50
 
 INSERT INTO seller (
-    seller_name, mobile, email, password, 
-    business_name, business_address, business_mobile, business_email, logo, banner,
+    seller_name, displayed_name, mobile, email, password, 
     account_number, account_holder_name, iban,
-    pickupaddress_id, fiscal_code, role, is_email_verified, account_status
+    pickupaddress, fiscal_code, role, is_email_verified, account_status
 ) VALUES (
-    'Luigi Seller', '3399988776', 'luigi@example.com', 'securepass',
-    'Luigi Foods SRL', 'Via Roma 123, Rome', '3399988776', 'contact@luigifoods.it', 'logo.png', 'banner.jpg',
+    'Luigi Seller', 'Lui', '3399988776', 'luigi@example.com', 'securepass',
     'IT60X0542811101000000123456', 'Luigi Rossi', 'IT60X0542811101000000123456',
-    1, 'RSSLGU80A01H501Z', 'ROLE_SELLER', TRUE, 'ACTIVE'
+    'Via sagrat, 1', 'RSSLGU80A01H501Z', 'ROLE_SELLER', TRUE, 'ACTIVE'
 );
 
 -- Assume seller with ID 1 already exists

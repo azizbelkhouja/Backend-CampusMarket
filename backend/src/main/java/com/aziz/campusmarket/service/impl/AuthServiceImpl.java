@@ -48,7 +48,6 @@ public class AuthServiceImpl implements AuthService {
     public void sendOtp(String email, USER_ROLE role) throws Exception {
 
         String SIGNING_PREFIX = "signin_";
-//        String SELLER_PREFIX = "Seller_";
 
         if (email.startsWith(SIGNING_PREFIX)) {
             email = email.substring(SIGNING_PREFIX.length());

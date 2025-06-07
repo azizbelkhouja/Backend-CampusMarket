@@ -51,6 +51,7 @@ public class SellerServiceImpl implements SellerService {
         newSeller.setRole(USER_ROLE.ROLE_SELLER);
         newSeller.setMobile(seller.getMobile());
         newSeller.setBankDetails(seller.getBankDetails());
+        newSeller.setEmailVerified(true);
         newSeller.setBusinessDetails(seller.getBusinessDetails());
 
         return sellerRepository.save(newSeller);
