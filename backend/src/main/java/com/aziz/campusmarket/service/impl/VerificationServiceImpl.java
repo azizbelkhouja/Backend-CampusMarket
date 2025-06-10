@@ -11,7 +11,6 @@ public class VerificationServiceImpl implements VerificationService {
     private final VerificationCodeRepository verificationCodeRepository;
 
     VerificationServiceImpl(VerificationCodeRepository verificationCodeRepository){
-
         this.verificationCodeRepository = verificationCodeRepository;
     }
 
@@ -23,7 +22,7 @@ public class VerificationServiceImpl implements VerificationService {
             verificationCodeRepository.delete(isExist);
         }
 
-        VerificationCode verificationCode=new VerificationCode();
+        VerificationCode verificationCode= new VerificationCode();
         verificationCode.setOtp(otp);
         verificationCode.setEmail(email);
 

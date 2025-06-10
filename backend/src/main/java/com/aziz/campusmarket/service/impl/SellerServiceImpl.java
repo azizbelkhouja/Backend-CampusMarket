@@ -52,7 +52,7 @@ public class SellerServiceImpl implements SellerService {
         newSeller.setMobile(seller.getMobile());
         newSeller.setBankDetails(seller.getBankDetails());
         newSeller.setEmailVerified(true);
-        newSeller.setBusinessDetails(seller.getBusinessDetails());
+        newSeller.setPreferredName(seller.getPreferredName());
 
         return sellerRepository.save(newSeller);
     }
@@ -95,10 +95,6 @@ public class SellerServiceImpl implements SellerService {
 
         if (seller.getEmail() != null) {
             existingSeller.setEmail(seller.getEmail());
-        }
-
-        if (seller.getBusinessDetails() != null && seller.getBusinessDetails().getBusinessName() != null) {
-            existingSeller.getBusinessDetails().setBusinessName(seller.getBusinessDetails().getBusinessName());
         }
 
         if (seller.getBankDetails() != null
