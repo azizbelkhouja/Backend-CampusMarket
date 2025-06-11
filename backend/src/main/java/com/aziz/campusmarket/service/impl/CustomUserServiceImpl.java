@@ -43,7 +43,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
             }
         }
 
-        throw new UsernameNotFoundException(username+" email not found");
+        throw new UsernameNotFoundException(username + " email not found");
     }
 
     private UserDetails buildUserDetails(String email, String password, USER_ROLE role) {

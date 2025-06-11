@@ -16,7 +16,6 @@ import com.aziz.campusmarket.service.SellerService;
 import com.aziz.campusmarket.service.VerificationService;
 import com.aziz.campusmarket.service.impl.CustomUserServiceImpl;
 import com.aziz.campusmarket.utils.OtpUtil;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,7 @@ public class SellerController {
     private final VerificationCodeRepository verificationCodeRepository;
     private final VerificationService verificationService;
     private final JwtProvider jwtProvider;
-    private final CustomUserServiceImpl customUserServiceImplementation;
+    private final CustomUserServiceImpl customUserServiceImpl;
 
 
     @PostMapping("/sent/login-otp")
@@ -52,8 +51,8 @@ public class SellerController {
         String otp = OtpUtil.generateOtp();
         VerificationCode verificationCode = verificationService.createVerificationCode(otp, req.getEmail());
 
-        String subject = "CampusMarket Login Otp";
-        String text = "your code is - ";
+        String subject = "Hey Dear Seller, Your CampusMarket Login Otp is here";
+        String text = "your code is " + otp;
         emailService.sendVerificationOtpEmail(req.getEmail(), verificationCode.getOtp(), subject, text);
 
         ApiResponse res = new ApiResponse();
@@ -62,7 +61,7 @@ public class SellerController {
     }
 
     @PostMapping("/verify/login-otp")
-    public ResponseEntity<AuthResponse> verifyLoginOtp(@RequestBody VerificationCode req) throws MessagingException, SellerException {
+    public ResponseEntity<AuthResponse> verifyLoginOtp(@RequestBody VerificationCode req) throws SellerException {
 
         String otp = req.getOtp();
         String email = req.getEmail();
@@ -72,7 +71,7 @@ public class SellerController {
             throw new SellerException("wrong otp...");
         }
 
-        Authentication authentication = authenticate(req.getEmail());
+        Authentication authentication = authenticate(email, otp);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication);
@@ -90,34 +89,23 @@ public class SellerController {
         return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.OK);
     }
 
-    private Authentication authenticate(String username) {
-        UserDetails userDetails = customUserServiceImplementation.loadUserByUsername("seller_" + username);
+    private Authentication authenticate(String username, String otp) {
+
+        UserDetails userDetails = customUserServiceImpl.loadUserByUsername("seller_" + username);
 
         System.out.println("sign in userDetails - " + userDetails);
 
         if (userDetails == null) {
-            System.out.println("sign in userDetails - null " + userDetails);
+            System.out.println("sign in userDetails - null ");
             throw new BadCredentialsException("Invalid username or password");
         }
-
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    }
-
-    @PatchMapping("/verify/{otp}")
-    public ResponseEntity<Seller> verifySellerEmail(@PathVariable String otp) throws Exception {
-
-
-        VerificationCode verificationCode = verificationCodeRepository.findByOtp(otp);
+        VerificationCode verificationCode = verificationCodeRepository.findByEmail(username);
 
         if (verificationCode == null || !verificationCode.getOtp().equals(otp)) {
             throw new SellerException("wrong otp...");
         }
-
-        Seller seller = sellerService.verifyEmail(verificationCode.getEmail(), otp);
-
-        return new ResponseEntity<>(seller, HttpStatus.OK);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
-
 
     @PostMapping
     public ResponseEntity<Seller> createSeller(@RequestBody Seller seller) throws Exception {

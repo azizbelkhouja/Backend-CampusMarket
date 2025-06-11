@@ -51,7 +51,6 @@ public class SellerServiceImpl implements SellerService {
         newSeller.setRole(USER_ROLE.ROLE_SELLER);
         newSeller.setMobile(seller.getMobile());
         newSeller.setBankDetails(seller.getBankDetails());
-        newSeller.setEmailVerified(true);
         newSeller.setPreferredName(seller.getPreferredName());
 
         return sellerRepository.save(newSeller);
@@ -130,14 +129,6 @@ public class SellerServiceImpl implements SellerService {
     public void deleteSeller(Long id) throws Exception {
         Seller seller = getSellerById(id);
         sellerRepository.delete(seller);
-    }
-
-    @Override
-    public Seller verifyEmail(String email, String otp) throws Exception {
-        Seller seller = getSellerByEmail(email);
-        seller.setEmailVerified(true);
-
-        return sellerRepository.save(seller);
     }
 
     @Override

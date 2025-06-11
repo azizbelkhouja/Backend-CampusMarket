@@ -135,8 +135,8 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication);
-
         AuthResponse authResponse = new AuthResponse();
+
         authResponse.setMessage("Login Success");
         authResponse.setJwt(token);
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
