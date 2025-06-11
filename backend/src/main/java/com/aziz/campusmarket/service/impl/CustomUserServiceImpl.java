@@ -38,7 +38,6 @@ public class CustomUserServiceImpl implements UserDetailsService {
             }
         } else {
             User user = userRepository.findByEmail(username);
-
             if (user != null) {
                 return buildUserDetails(user.getEmail(), user.getPassword(), user.getRole());
             }

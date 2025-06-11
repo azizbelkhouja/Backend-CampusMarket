@@ -7,7 +7,7 @@ import com.aziz.campusmarket.response.AuthResponse;
 
 public interface AuthService {
 
-    void sendOtp(String email, USER_ROLE role) throws Exception;
+    void sendOtp(String email) throws Exception;
 
     String createUser(SignupRequest req) throws Exception;
 

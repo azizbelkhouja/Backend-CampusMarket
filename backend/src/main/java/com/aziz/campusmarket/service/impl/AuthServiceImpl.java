@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
 
     @Override
-    public void sendOtp(String email, USER_ROLE role) throws Exception {
+    public void sendOtp(String email) throws Exception {
 
         String SIGNING_PREFIX = "signing_";
 
