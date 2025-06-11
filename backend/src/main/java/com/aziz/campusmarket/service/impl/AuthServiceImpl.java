@@ -2,6 +2,7 @@ package com.aziz.campusmarket.service.impl;
 
 import com.aziz.campusmarket.config.JwtProvider;
 import com.aziz.campusmarket.domain.USER_ROLE;
+import com.aziz.campusmarket.exceptions.SellerException;
 import com.aziz.campusmarket.modal.Cart;
 import com.aziz.campusmarket.modal.Seller;
 import com.aziz.campusmarket.modal.User;
@@ -15,6 +16,7 @@ import com.aziz.campusmarket.request.SignupRequest;
 import com.aziz.campusmarket.response.AuthResponse;
 import com.aziz.campusmarket.service.AuthService;
 import com.aziz.campusmarket.service.EmailService;
+import com.aziz.campusmarket.service.UserService;
 import com.aziz.campusmarket.utils.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -42,34 +44,20 @@ public class AuthServiceImpl implements AuthService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final CustomUserServiceImpl customUserServiceImpl;
-    private final SellerRepository sellerRepository;
+    private final UserService userService;
 
     @Override
     public void sendOtp(String email, USER_ROLE role) throws Exception {
 
-        String SIGNING_PREFIX = "signin_";
+        String SIGNING_PREFIX = "signing_";
 
         if (email.startsWith(SIGNING_PREFIX)) {
             email = email.substring(SIGNING_PREFIX.length());
-
-            if (role.equals(USER_ROLE.ROLE_SELLER)) {
-
-                Seller seller = sellerRepository.findByEmail(email);
-                if (seller == null) {
-                    throw new Exception("Seller not found");
-                }
-            }
-            else {
-                User user = userRepository.findByEmail(email);
-                if (user == null) {
-                    throw new Exception("No User with this Email");
-                }
-            }
-
-
+            userService.findUserByEmail(email);
         }
 
-        VerificationCode isExist = verificationCodeRepository.findByEmail(email);
+        VerificationCode isExist = verificationCodeRepository
+                .findByEmail(email);
 
         if (isExist != null) {
             verificationCodeRepository.delete(isExist);
@@ -91,21 +79,28 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String createUser(SignupRequest req) throws Exception {
 
-        VerificationCode verificationCode = verificationCodeRepository.findByEmail(req.getEmail());
+        String email = req.getEmail();
+        String fullName = req.getFullName();
+        String otp = req.getOtp();
 
-        if (verificationCode == null || !verificationCode.getOtp().equals(req.getOtp())) {
-            throw new Exception("Wrong Otp");
+        VerificationCode verificationCode = verificationCodeRepository.findByEmail(email);
+
+        if (verificationCode == null || !verificationCode.getOtp().equals(otp)) {
+            throw new Exception("wrong otp...");
         }
 
-        User user = userRepository.findByEmail(req.getEmail());
+        User user = userRepository.findByEmail(email);
 
         if (user == null) {
-            User  createdUser = new User();
-            createdUser.setEmail(req.getEmail());
-            createdUser.setFullName(req.getFullName());
+
+            User createdUser = new User();
+            createdUser.setEmail(email);
+            createdUser.setFullName(fullName);
             createdUser.setRole(USER_ROLE.ROLE_CUSTOMER);
-            createdUser.setMobile("123456789");
-            createdUser.setPassword(passwordEncoder.encode(req.getOtp()));
+            createdUser.setMobile("9083476123");
+            createdUser.setPassword(passwordEncoder.encode(otp));
+
+            System.out.println(createdUser);
 
             user = userRepository.save(createdUser);
 
@@ -114,11 +109,17 @@ public class AuthServiceImpl implements AuthService {
             cartRepository.save(cart);
         }
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(USER_ROLE.ROLE_CUSTOMER.toString()));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(
+                USER_ROLE.ROLE_CUSTOMER.toString()));
+
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                email, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         return jwtProvider.generateToken(authentication);
     }
 
@@ -128,17 +129,21 @@ public class AuthServiceImpl implements AuthService {
         String username = req.getEmail();
         String otp = req.getOtp();
 
+        System.out.println(username + " ----- " + otp);
+
         Authentication authentication = authenticate(username, otp);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication);
 
         AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("Login Success");
         authResponse.setJwt(token);
-        authResponse.setMessage("Logged in Successfully");
-
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+
         String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+
 
         authResponse.setRole(USER_ROLE.valueOf(roleName));
 
@@ -149,23 +154,17 @@ public class AuthServiceImpl implements AuthService {
 
         UserDetails userDetails = customUserServiceImpl.loadUserByUsername(username);
 
-        String SELLER_PREFIX = "Seller_";
-        if (username.startsWith(SELLER_PREFIX)) {
-
-            username = username.substring(SELLER_PREFIX.length());
-
-        }
+        System.out.println("sign in userDetails - " + userDetails);
 
         if (userDetails == null) {
-            throw new BadCredentialsException("Invalid Username");
+            System.out.println("sign in userDetails - null ");
+            throw new BadCredentialsException("Invalid username or password");
         }
-
         VerificationCode verificationCode = verificationCodeRepository.findByEmail(username);
 
         if (verificationCode == null || !verificationCode.getOtp().equals(otp)) {
-            throw new Exception("Wrong Verification Code");
+            throw new SellerException("wrong otp...");
         }
-
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }

@@ -23,16 +23,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO) // generate Id automatically ( no id from frontend when new user created )
     private Long id;
 
+    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // password will not come when we fetch, pw must be secret
     private String password;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String fullName;
 
     private String mobile;
 
-    @Enumerated(EnumType.STRING)
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
     // One-to-Many with Address: A user can have multiple addresses
