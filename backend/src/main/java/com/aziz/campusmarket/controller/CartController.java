@@ -44,8 +44,7 @@ public class CartController {
         User user = userService.findUserByJwtToken(jwt);
         Product product = productService.findProductById(req.getProductId());
 
-        CartItem item = cartService.addCartItem(
-                user, product, req.getSize(), req.getQuantity());
+        CartItem item = cartService.addCartItem(user, product, req.getSize(), req.getQuantity());
 
         ApiResponse res = new ApiResponse();
         res.setMessage("Item Added To Cart Successfully");

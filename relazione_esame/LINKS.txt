@@ -1,0 +1,7 @@
+LINK AL TRELLO : https://trello.com/invite/b/67d441b6fa78358d842e5dac/ATTIa7da1e0fcbd78f91515576d1fe9605c78095F9E4/campusmarket
+
+Repository Frontend: https://github.com/azizbelkhouja/Frontend-CampusMarket
+
+Repository Backend: https://github.com/azizbelkhouja/Backend-CampusMarket
+
+Eesercizi Fatti (+45) : https://github.com/azizbelkhouja/esercizi-IngSoftware

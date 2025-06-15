@@ -67,7 +67,7 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = sellerRepository.findByEmail(email);
 
         if (seller == null) {
-            throw new SellerException("Seller not found");
+            System.out.println("no sellers");
         }
 
         return seller;

@@ -71,9 +71,6 @@ public class CartServiceImpl implements CartService {
 
     private int calculateDiscountPercentage(int mrpPrice, int sellingPrice) {
 
-        if (mrpPrice <= 0) {
-            throw new IllegalArgumentException("Actual Price must be > 0");
-        }
         double discount = mrpPrice - sellingPrice;
         double discountPercentage = (discount/mrpPrice) * 100;
 
